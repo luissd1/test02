@@ -140,7 +140,7 @@ export default function Home(
       <Header></Header>
       <Container>
         <InputGroup size="sm" className="my-3">
-            <Form.Control className="me-auto" type="text" name="search" placeholder="Ingrese busqueda..." onChange={handleinputchange} />
+            <Form.Control className="me-auto" type="text" name="search" placeholder="Ingrese personaje..." onChange={handleinputchange} />
             <Button variant="outline-secondary" onClick={handlebuttonclick}>Search</Button>
         </InputGroup>
       </Container>
