@@ -1,0 +1,24 @@
+query Personajes {
+        characters {
+          results {
+            name
+            status
+            image
+            id
+          }
+        }
+      } 
+query Episodios{
+  episodes {
+  	results {
+  	  id
+      name
+      episode
+      air_date
+      characters {
+        id
+        name
+      }
+  	}
+  }
+}
