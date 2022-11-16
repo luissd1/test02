@@ -1,5 +1,3 @@
-import Link from 'next/link'
-
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -29,6 +27,7 @@ export default function Header() {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
+            <Nav.Link href="chapters">Capítulos</Nav.Link>
               {/* <Nav.Link href="/post/capitulos">Capítulos</Nav.Link>
               <Nav.Link href="/post/favoritos">Favoritos</Nav.Link> */}
             </Nav>

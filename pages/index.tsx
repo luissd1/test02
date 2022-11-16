@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import Image from 'next/image'
 
 import { ChangeEvent, MouseEvent, useState } from 'react'
 import Header from '../components/header'
@@ -140,7 +139,7 @@ export default function Home(
       <Header></Header>
       <Container>
         <InputGroup size="sm" className="my-3">
-            <Form.Control className="me-auto" type="text" name="search" placeholder="Ingrese character..." onChange={handleinputchange} />
+            <Form.Control className="me-auto" type="text" name="search" placeholder="Ingrese personaje..." onChange={handleinputchange} />
             <Button variant="outline-secondary" onClick={handlebuttonclick}>Search</Button>
         </InputGroup>
       </Container>
@@ -150,19 +149,23 @@ export default function Home(
       </select>
       </section>
       <section >
-        <div className={styles.grid}>
-          {characters.results.map(({ name, status, image, id }) => (
-            <Card id={id} className={styles.card} onClick={handleShow}>
-              <Card.Img id={id} variant="top" src={image} />
-              <Card.Body id={id}>
-                <Card.Title id={id} className={styles.card_title}>{name}</Card.Title>
-                <Card.Text id={id}>
-                  {status}
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          ))}
-        </div>
+        <Container fluid>
+          <Row xs={1} sm={2} md={3} lg={4} xl={5}>
+            {characters.results.map(({ name, status, image, id }) => (
+              <Col>
+                <Card id={id} className={styles.card} onClick={handleShow}>
+                  <Card.Img id={id} variant="top" src={image} />
+                  <Card.Body id={id}>
+                    <Card.Title id={id} className={styles.card_title}>{name}</Card.Title>
+                    <Card.Text id={id}>
+                      {status}
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        </Container>
       </section>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -185,51 +188,41 @@ export default function Home(
         </Modal.Header>
         <Modal.Body>
           <Container>
-            <Row>
-              <Col xs={12} md={3}>
+            <Row xs={2} sm={2} md={2} lg={2} xl={2}>
+              <Col>
                 Estado:
               </Col>
-              <Col xs={12} md={9}>
+              <Col>
                 {char_name.status}
               </Col>
-            </Row>
-            <Row>
-              <Col xs={12} md={3}>
+              <Col>
                 Especie:
               </Col>
-              <Col xs={12} md={9}>
+              <Col>
                 {char_name.species}
               </Col>
-            </Row>
-            <Row>
-              <Col xs={12} md={3}>
+              <Col>
                 Tipo:
               </Col>
-              <Col xs={12} md={9}>
+              <Col>
                 {char_name.type}
               </Col>
-            </Row>
-            <Row>
-              <Col xs={12} md={3}>
+              <Col>
                 Género:
               </Col>
-              <Col xs={12} md={9}>
+              <Col>
                 {char_name.gender}
               </Col>
-            </Row>
-            <Row>
-              <Col xs={12} md={3}>
+              <Col>
                 Origen:
               </Col>
-              <Col xs={12} md={9}>
+              <Col>
                 {char_name.origin}
               </Col>
-            </Row>
-            <Row>
-              <Col xs={12} md={3}>
+              <Col>
                 Ubicación:
               </Col>
-              <Col xs={12} md={9}>
+              <Col>
                 {char_name.location}
               </Col>
             </Row>
