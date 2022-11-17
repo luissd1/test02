@@ -37,3 +37,9 @@ img {
 a:hover .star_icon{
   fill: rgb(251, 255, 0);
 }
+.amarillo {
+  fill: rgb(251, 255, 0);
+}
+.gris {
+  fill: rgb(165, 165, 164);
+}

@@ -4,7 +4,7 @@ import { ChangeEvent, MouseEvent, useState } from 'react'
 import Header from '../components/header'
 import Layout, { siteTitle } from '../components/layout'
 import { GetStaticProps, GetServerSideProps } from 'next'
-import { Star } from "../public/images/star.jsx";
+import Star from "../public/images/star";
 
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
@@ -56,7 +56,8 @@ const GET_CHARACTER = gql`
         }
       }
       `
-var Character_filter = ''
+var class_star = ''
+
 export default function Home(
   {
     characters,
@@ -108,13 +109,20 @@ export default function Home(
         }
       }); 
     };
-    const handleStarclick = (e: { currentTarget: { tagName: string } }) => {
+    const handleStarclick = (e: { currentTarget: { id: string } }) => {
       setfav(!fav)
-      console.log(fav)
-      if (fav == true) {
-        console.log('amarillo')
+      console.log(e.currentTarget.id)
+      const box = document.getElementById("star_" + e.currentTarget.id.toString());
+      console.log(box);
+      
+      if (box?.classList.contains('amarillo')) {
+        box?.classList.remove('amarillo')
+        box?.classList.add('gris')
+      } else if (box?.classList.contains('gris')) {
+        box?.classList.remove('gris')
+        box?.classList.add('amarillo')
       } else {
-        console.log('gris')
+        box?.classList.add('amarillo')
       }
     }
     const [task, settask] = useState({
@@ -167,8 +175,8 @@ export default function Home(
               <Col>
                 <Card id={id} className={styles.card}>
                   <Card.Img id={id} variant="top" src={image} onClick={handleShow}/>
-                  <a className="position-absolute bottom-0 start-0" href="#" onClick={handleStarclick}>
-                    <Star />
+                  <a id={id} className="position-absolute bottom-0 start-0" href="#" onClick={handleStarclick}>
+                    <Star id_path={"star_" + id}/>
                   </a>
                   <Card.Body id={id} onClick={handleShow}>
                     <Card.Title id={id} className={styles.card_title}>{name}</Card.Title>
