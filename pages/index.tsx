@@ -4,6 +4,7 @@ import { ChangeEvent, MouseEvent, useState } from 'react'
 import Header from '../components/header'
 import Layout, { siteTitle } from '../components/layout'
 import { GetStaticProps, GetServerSideProps } from 'next'
+import { Star } from "../public/images/star.jsx";
 
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
@@ -19,12 +20,14 @@ import client from "../apollo-client";
 
 import utilStyles from '../styles/utils.module.css'
 import styles from '../styles/header.module.css'
+
 import { useRouter } from 'next/router'
 
 type HandleInputChange = ChangeEvent<HTMLInputElement>
 type HandleButtonClick = MouseEvent<HTMLButtonElement,globalThis.MouseEvent>
 type HandleSelectEvent = ChangeEvent<HTMLSelectElement>
 type HandleCardClick = MouseEvent<HTMLElement>
+type HandleStarclick = MouseEvent<SVGSVGElement>
 
 let char_name = {image:'',name:'',status:'',type:'',species:'',gender:'',origin:'',location:''}
 let listItems = []
@@ -104,7 +107,11 @@ export default function Home(
         }
       }); 
     };
-    
+    const handleStarclick = (e: HandleStarclick) => {
+      console.log(e.currentTarget.tagName);
+      if (e.currentTarget.tagName == "svg") {
+      }
+    }
     const [task, settask] = useState({
       search: '',
       indice: ''
@@ -128,7 +135,7 @@ export default function Home(
         value,
       },
     }: HandleSelectEvent) => {
-      await settask({ ...task, [name] : value });
+      settask({ ...task, [name] : value });
       await router.push(`/?filter=${task.search}&page=${value}`);
     }
   return (
@@ -149,12 +156,15 @@ export default function Home(
       </select>
       </section>
       <section >
-        <Container fluid>
+        <Container>
           <Row xs={1} sm={2} md={3} lg={4} xl={5}>
             {characters.results.map(({ name, status, image, id }) => (
               <Col>
                 <Card id={id} className={styles.card} onClick={handleShow}>
                   <Card.Img id={id} variant="top" src={image} />
+                  <a className="position-absolute bottom-0 start-0" href="#">
+                    <Star />
+                  </a>
                   <Card.Body id={id}>
                     <Card.Title id={id} className={styles.card_title}>{name}</Card.Title>
                     <Card.Text id={id}>

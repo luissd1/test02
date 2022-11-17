@@ -59,14 +59,13 @@
     transition: color 0.15s ease, border-color 0.15s ease;
   }
 
-  .card:hover,
+  /* .card:hover,
   .card:focus,
   .card:active {
     color: #0070f3;
     border-color: #0070f3;
     background: #ecf1f7;
-    opacity: 0.5;
-  }
+  } */
   .card_title {
     margin: 0 0 1rem 0;
     font-size: 1rem;
@@ -79,6 +78,9 @@
     align-items: center;
     justify-content: flex-end;
     margin-right: 1rem;
+  }
+  a:hover .star_icon{
+    fill: rgb(251, 255, 0);
   }
 
 

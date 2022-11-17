@@ -34,3 +34,6 @@ img {
   max-width: 100%;
   display: block;
 }
+svg:hover {
+  fill: red;
+}

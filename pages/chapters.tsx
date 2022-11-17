@@ -105,7 +105,7 @@ export default function Episodios(
       </select>
       </section>
       <section >
-        <Container fluid>
+        <Container>
             <Row xs={1} sm={2} md={3} lg={4} xl={5}>
                 {episodes.results.map(({ id, name, air_date, episode }) => (
                     <Col>
