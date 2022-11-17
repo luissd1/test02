@@ -34,6 +34,6 @@ img {
   max-width: 100%;
   display: block;
 }
-svg:hover {
-  fill: red;
+a:hover .star_icon{
+  fill: rgb(251, 255, 0);
 }

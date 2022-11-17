@@ -88,9 +88,10 @@ export default function Home(
     const router = useRouter();
 
     const [show, setShow] = useState(false);
+    const [fav, setfav] = useState(false);
 
     const handleClose = () => setShow(false);
-    const handleShow = (e:HandleCardClick) => {
+    const handleShow = (e: { currentTarget: { id:string } }) => {
       setShow(true);
       characters.results.forEach(function (value) {
         if (value.id == e.currentTarget.id) {
@@ -107,9 +108,13 @@ export default function Home(
         }
       }); 
     };
-    const handleStarclick = (e: HandleStarclick) => {
-      console.log(e.currentTarget.tagName);
-      if (e.currentTarget.tagName == "svg") {
+    const handleStarclick = (e: { currentTarget: { tagName: string } }) => {
+      setfav(!fav)
+      console.log(fav)
+      if (fav == true) {
+        console.log('amarillo')
+      } else {
+        console.log('gris')
       }
     }
     const [task, settask] = useState({
@@ -160,12 +165,12 @@ export default function Home(
           <Row xs={1} sm={2} md={3} lg={4} xl={5}>
             {characters.results.map(({ name, status, image, id }) => (
               <Col>
-                <Card id={id} className={styles.card} onClick={handleShow}>
-                  <Card.Img id={id} variant="top" src={image} />
-                  <a className="position-absolute bottom-0 start-0" href="#">
+                <Card id={id} className={styles.card}>
+                  <Card.Img id={id} variant="top" src={image} onClick={handleShow}/>
+                  <a className="position-absolute bottom-0 start-0" href="#" onClick={handleStarclick}>
                     <Star />
                   </a>
-                  <Card.Body id={id}>
+                  <Card.Body id={id} onClick={handleShow}>
                     <Card.Title id={id} className={styles.card_title}>{name}</Card.Title>
                     <Card.Text id={id}>
                       {status}
