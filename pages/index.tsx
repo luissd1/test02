@@ -1,11 +1,12 @@
 import Head from 'next/head'
+import { useRouter } from 'next/router'
+import { GetServerSideProps } from 'next'
 
-import { ChangeEvent, MouseEvent, useState } from 'react'
 import Header from '../components/header'
 import Layout, { siteTitle } from '../components/layout'
-import { GetStaticProps, GetServerSideProps } from 'next'
 import Star from "../public/images/star";
 
+import { ChangeEvent, MouseEvent, useState, useEffect } from 'react'
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -21,13 +22,10 @@ import client from "../apollo-client";
 import utilStyles from '../styles/utils.module.css'
 import styles from '../styles/header.module.css'
 
-import { useRouter } from 'next/router'
 
 type HandleInputChange = ChangeEvent<HTMLInputElement>
 type HandleButtonClick = MouseEvent<HTMLButtonElement,globalThis.MouseEvent>
 type HandleSelectEvent = ChangeEvent<HTMLSelectElement>
-type HandleCardClick = MouseEvent<HTMLElement>
-type HandleStarclick = MouseEvent<SVGSVGElement>
 
 let char_name = {image:'',name:'',status:'',type:'',species:'',gender:'',origin:'',location:''}
 let listItems = []
@@ -56,8 +54,6 @@ const GET_CHARACTER = gql`
         }
       }
       `
-var class_star = ''
-
 export default function Home(
   {
     characters,
@@ -86,11 +82,20 @@ export default function Home(
   }) {
     let names = Array.from(Array(characters.info.pages).keys())
     listItems = names.map((pages) =>  <option value={pages+1}>{pages+1}</option>);
+    let newCharacters = characters.results.map((item) => 
+    Object.assign({}, item, {favorite:false})
+    )
     const router = useRouter();
-
     const [show, setShow] = useState(false);
-    const [fav, setfav] = useState(false);
-
+    const [fav, setfav] = useState({newCharacters});
+    useEffect(() => {
+      const data = window.localStorage.getItem('MY_APP_STATE');
+      if ( data !== null ) setfav(JSON.parse(data));
+    }, []);
+    useEffect(() => {
+      window.localStorage.setItem('MY_APP_STATE', JSON.stringify(fav));
+    }, [fav]);
+    console.log(fav)
     const handleClose = () => setShow(false);
     const handleShow = (e: { currentTarget: { id:string } }) => {
       setShow(true);
@@ -110,21 +115,36 @@ export default function Home(
       }); 
     };
     const handleStarclick = (e: { currentTarget: { id: string } }) => {
-      setfav(!fav)
-      console.log(e.currentTarget.id)
       const box = document.getElementById("star_" + e.currentTarget.id.toString());
-      console.log(box);
-      
       if (box?.classList.contains('amarillo')) {
         box?.classList.remove('amarillo')
         box?.classList.add('gris')
+        fav.newCharacters.forEach(function (value,index) {
+          if (value.id == e.currentTarget.id) {
+            fav.newCharacters[index].favorite = false;
+            setfav({ ...fav, ['newCharacters']: fav.newCharacters});
+          }
+        })
       } else if (box?.classList.contains('gris')) {
         box?.classList.remove('gris')
         box?.classList.add('amarillo')
+        fav.newCharacters.forEach(function (value,index) {
+          if (value.id == e.currentTarget.id) {
+            fav.newCharacters[index].favorite = true;
+            setfav({ ...fav, ['newCharacters']: fav.newCharacters});
+          }
+        })
       } else {
         box?.classList.add('amarillo')
+        fav.newCharacters.forEach(function (value,index) {
+          if (value.id == e.currentTarget.id) {
+            newCharacters[index].favorite = true;
+            setfav({ ...fav, ['newCharacters']: fav.newCharacters});
+          }
+        })
       }
     }
+    
     const [task, settask] = useState({
       search: '',
       indice: ''
@@ -171,12 +191,12 @@ export default function Home(
       <section >
         <Container>
           <Row xs={1} sm={2} md={3} lg={4} xl={5}>
-            {characters.results.map(({ name, status, image, id }) => (
+            {fav.newCharacters.map(({ name, status, image, id, favorite }) => (
               <Col>
                 <Card id={id} className={styles.card}>
                   <Card.Img id={id} variant="top" src={image} onClick={handleShow}/>
                   <a id={id} className="position-absolute bottom-0 start-0" href="#" onClick={handleStarclick}>
-                    <Star id_path={"star_" + id}/>
+                    <Star className={favorite ? 'amarillo' : ('gris')} id_path={"star_" + id}/>
                   </a>
                   <Card.Body id={id} onClick={handleShow}>
                     <Card.Title id={id} className={styles.card_title}>{name}</Card.Title>
@@ -266,7 +286,6 @@ export const getServerSideProps: GetServerSideProps = async ({query}) => {
   const { data } = await client.query({
     query: GET_CHARACTER,variables:{page:Number(query.page), name:query.filter}
   });
-
   return {
     props: {
       characters: data.characters,

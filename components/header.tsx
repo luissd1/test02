@@ -28,6 +28,7 @@ export default function Header() {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
             <Nav.Link href="chapters">Capítulos</Nav.Link>
+            {/* <Nav.Link href="favorites">Favoritos</Nav.Link> */}
               {/* <Nav.Link href="/post/capitulos">Capítulos</Nav.Link>
               <Nav.Link href="/post/favoritos">Favoritos</Nav.Link> */}
             </Nav>
